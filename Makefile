@@ -7,7 +7,7 @@ PRIMARY_GROUP := $(shell id -gn $(USER))
 HOME_DIR := $(HOME)
 TMUX_CONFIG_SRC := ./tmux/tmux.conf
 TMUX_PLUGINS_SRC := ./tmux/plugins.tar
-GLOBAL_CONFIG_DIR := /etc/tmux
+GLOBAL_CONFIG_DIR := /etc
 GLOBAL_PLUGINS_DIR := /usr/local/share/tmux
 USER_PLUGINS_DIR := $(HOME_DIR)/.tmux
 
@@ -60,7 +60,6 @@ tmux-user: install-user-config install-user-plugins
 # Global installation targets (requires sudo)
 install-global-config: check-deps
 	@echo "Installing global tmux configuration..."
-	@sudo mkdir -p $(GLOBAL_CONFIG_DIR)
 	@sed 's|set-environment -g TMUX_PLUGIN_MANAGER_PATH.*|set-environment -g TMUX_PLUGIN_MANAGER_PATH "$(GLOBAL_PLUGINS_DIR)/plugins"|g; s|run.*tpm.*|run "$(GLOBAL_PLUGINS_DIR)/plugins/tpm/tpm"|g' $(TMUX_CONFIG_SRC) | sudo tee $(GLOBAL_CONFIG_DIR)/tmux.conf > /dev/null
 	@sudo chown root:root $(GLOBAL_CONFIG_DIR)/tmux.conf
 	@sudo chmod 644 $(GLOBAL_CONFIG_DIR)/tmux.conf
@@ -86,7 +85,7 @@ clean-user:
 
 clean-global:
 	@echo "Removing global tmux configuration..."
-	@sudo rm -rf $(GLOBAL_CONFIG_DIR)
+	@sudo rm -rf $(GLOBAL_CONFIG_DIR)/tmux.conf
 	@sudo rm -rf $(GLOBAL_PLUGINS_DIR)
 	@echo "Global configuration removed"
 
