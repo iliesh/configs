@@ -61,7 +61,7 @@ tmux-user: install-user-config install-user-plugins
 install-global-config: check-deps
 	@echo "Installing global tmux configuration..."
 	@sudo mkdir -p $(GLOBAL_CONFIG_DIR)
-	@sed 's|set-environment -g TMUX_PLUGIN_MANAGER_PATH.*|set-environment -g TMUX_PLUGIN_MANAGER_PATH "$(GLOBAL_PLUGINS_DIR)"|g; s|run.*tpm.*|run "$(GLOBAL_PLUGINS_DIR)/tpm/tpm"|g' $(TMUX_CONFIG_SRC) | sudo tee $(GLOBAL_CONFIG_DIR)/tmux.conf > /dev/null
+	@sed 's|set-environment -g TMUX_PLUGIN_MANAGER_PATH.*|set-environment -g TMUX_PLUGIN_MANAGER_PATH "$(GLOBAL_PLUGINS_DIR)/plugins"|g; s|run.*tpm.*|run "$(GLOBAL_PLUGINS_DIR)/plugins/tpm/tpm"|g' $(TMUX_CONFIG_SRC) | sudo tee $(GLOBAL_CONFIG_DIR)/tmux.conf > /dev/null
 	@sudo chown root:root $(GLOBAL_CONFIG_DIR)/tmux.conf
 	@sudo chmod 644 $(GLOBAL_CONFIG_DIR)/tmux.conf
 	@echo "Global configuration installed"
